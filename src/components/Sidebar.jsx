@@ -1,13 +1,15 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, User, BookOpen, BarChart3, Settings, LogOut } from 'lucide-react';
 
 const Sidebar = () => {
+  const location = useLocation();
+  
   const menuItems = [
-    { icon: <LayoutDashboard size={20} />, label: 'Dashboard', active: true },
-    { icon: <BookOpen size={20} />, label: 'Academics', active: false },
-    { icon: <BarChart3 size={20} />, label: 'Analytics', active: false },
-    { icon: <User size={20} />, label: 'Profile', active: false },
-    { icon: <Settings size={20} />, label: 'Settings', active: false },
+    { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: '/' },
+    { icon: <BookOpen size={20} />, label: 'Academics', path: '/academics' },
+    { icon: <User size={20} />, label: 'Profile', path: '/profile' },
+    { icon: <Settings size={20} />, label: 'Settings', path: '/settings' },
   ];
 
   return (
@@ -17,17 +19,21 @@ const Sidebar = () => {
       </div>
       
       <nav className="flex-1 mt-6 px-4 space-y-2">
-        {menuItems.map((item, index) => (
-          <div 
-            key={index} 
-            className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${
-              item.active ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            {item.icon}
-            <span className="font-medium">{item.label}</span>
-          </div>
-        ))}
+        {menuItems.map((item, index) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link 
+              key={index} 
+              to={item.path}
+              className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                isActive ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              {item.icon}
+              <span className="font-medium">{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="p-4 border-t border-slate-800">
